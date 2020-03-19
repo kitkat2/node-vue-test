@@ -15,15 +15,16 @@
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-menu"></i>评论管理
+            <i class="el-icon-menu"></i>论文资源管理
           </template>
           <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
+            <template slot="title">论文分类</template>
+            <el-menu-item index="/categories/create">新增分类</el-menu-item>
+            <el-menu-item index="/categories/list">分类列表</el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="2-3">选项3</el-menu-item>
+          <el-menu-item-group title="论文信息">
+            <el-menu-item index="/papers/create">新增论文</el-menu-item>
+            <el-menu-item index="/papers/list">论文列表</el-menu-item>
           </el-menu-item-group>
           <el-submenu index="2-4">
             <template slot="title">选项4</template>
@@ -32,7 +33,7 @@
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-setting"></i>论文资源管理
+            <i class="el-icon-setting"></i>评论管理
           </template>
           <el-menu-item-group>
             <template slot="title">分组一</template>

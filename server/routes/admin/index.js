@@ -21,7 +21,12 @@ module.exports = app => {
 
     // 获取用户信息接口
     router.get('/', async (req, res) => {
-        const datas = await req.Model.find().limit(10)
+        const datas = await req.Model.find().populate('parent').limit(10)
+        res.send(datas)
+    })
+    // 获取父级信息接口
+     router.get('/parents-option', async (req, res) => {
+        const datas = await req.Model.find().populate('parent')
         res.send(datas)
     })
     // 获取单个用户的信息接口
@@ -35,6 +40,7 @@ module.exports = app => {
         if(model)
           res.send({ success: true})
     })
+    // 利用inflection插件转换类名，作为中间件将类名合并到路由中，实现通用的crud接口
     app.use('/admin/api/rest/:resource', async(req, res, next) =>{
         const modelName = require('inflection').classify(req.params.resource)
         req.Model = require(`../../models/${modelName}`)
