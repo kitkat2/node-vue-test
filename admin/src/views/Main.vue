@@ -2,7 +2,7 @@
 <!-- 100vh 代表整个屏幕的高度 -->
   <el-container style="height: 100vh;">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-openeds="['1', '3']">
+      <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-message"></i>用户管理

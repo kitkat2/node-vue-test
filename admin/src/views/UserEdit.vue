@@ -7,7 +7,8 @@
         <el-upload
           class="avatar-uploader"
           accept="image/*"
-          :action="$http.defaults.baseURL + '/upload'"
+          :action="uploadUrl"
+          :headers = "getAuthHeaders()"
           :show-file-list="false"
           :on-success="afterUpload"
         >
@@ -41,7 +42,7 @@
         <el-switch v-model="form.isLogoff"></el-switch>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" native-type="submit">添加</el-button>
+        <el-button type="primary" native-type="submit">提交</el-button>
       </el-form-item>
     </el-form>
   </div>

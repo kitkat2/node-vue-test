@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+// 登录
+import Login from '../views/Login.vue'
+
+// 后台管理主界面
 import Main from '../views/Main.vue'
 // 用户管理
 import userEdit from '../views/UserEdit.vue'
@@ -13,7 +18,14 @@ import paperList from '../views/PaperList.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: { isPublic: true}
+  },
+  {
   path: '/',
   name: 'main',
   component: Main,
@@ -63,4 +75,15 @@ const router = new VueRouter({
   routes
 })
 
+// 利用路由守卫对用户的登录进行校验
+router.beforeEach((to, from, next) =>{
+  if(!to.meta.isPublic && !localStorage.token){
+    Vue.prototype.$message({
+      type: 'error',
+      message: '请先登录'
+    })
+    return next('/login')
+  }
+  next()
+})
 export default router
