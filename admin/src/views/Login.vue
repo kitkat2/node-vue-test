@@ -25,14 +25,15 @@ export default {
   },
   methods: {
     async login() {
-      const res = await this.$http.post("login", this.model);
-    //   保存获取到的token
-    // sessionStorage
-    localStorage.token = res.data.token;
-    this.$router.push('/')
-    this.$message({
-        type: 'success',
-        message: '登录成功'
+      const res = await this.$http.post("login", this.model)
+      // 保存获取到的token
+      // 登录成功则将用户名通过路由传递到mian页面
+      localStorage.token = res.data.token
+      localStorage.username = this.model.name
+      this.$router.push({name: 'main',  params: { username: this.model.name }})
+      this.$message({
+          type: 'success',
+          message: '登录成功'
     })
     }
   }

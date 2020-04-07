@@ -26,10 +26,11 @@
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"
-      :current-page="page.current"
+      :current-page="page.crtPage"
       :page-size="10"
       layout="total, prev, pager, next, jumper"
       :total="page.total"
+      style="margin-top: 1rem;"
     ></el-pagination>
   </div>
 </template>
@@ -40,17 +41,22 @@ export default {
     return {
       categories: [],
       page: {
-        current: 1,
-        total: 13,
+        crtPage: 1,
+        pageSize: 10,
+        total: 10,
       }
-
     };
   },
   methods: {
     // 获取分类列表
-    async fetch() {
-      const res = await this.$http.get("rest/categories");
-      if (res) this.categories = res.data;
+    async fetch(crtPage) {
+      const res = await this.$http.post("rest/categories/page", {
+        page: {crtPage, pageSize: this.page.pageSize}
+      });
+      if (res) {
+        this.categories = res.data.datas;
+        this.page.total = res.data.total;
+      }
     },
     // 删除分类
     async remove(row) {
@@ -65,19 +71,20 @@ export default {
             type: "success",
             message: "删除成功!"
           });
-          this.fetch();
+          this.fetch(this.page.crtPage);
         })
         .catch(() => {
           console.log("已取消删除");
         });
     },
     // 分页处理
-    handleCurrentChange(){
-      console.log("分页");
+    async handleCurrentChange(crtPage) {
+      this.page.crtPage = crtPage
+      this.fetch(crtPage);
     }
   },
   created() {
-    this.fetch();
+    this.fetch(this.page.crtPage);
   }
 };
 </script>

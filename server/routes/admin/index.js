@@ -12,23 +12,32 @@ module.exports = app => {
     // 登录校验中间件
     const authMiddleware = require('../../middleware/auth')
 
-    // 提交用户信息表单接口 --> 新增用户
+    // 提交信息表单接口 --> 新增
     router.post('/', async (req, res) => {
         const model = await req.Model.create(req.body)
         res.send(model)
     })
 
-    // 编辑用户信息接口
+    // 编辑资源信息接口 --> 修改
     router.put('/:id', async (req, res) => {
         const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
         res.send(model)
     })
 
-    // 获取用户信息接口
+    // 分页查询
+    router.post('/page', async (req, res) => {
+        const {crtPage, pageSize} = await req.body.page
+        console.log(typeof crtPage, typeof pageSize);
+        
+        const total = await req.Model.find().countDocuments()
+        const datas = await req.Model.find().populate('parent').skip((crtPage-1)*pageSize).limit(pageSize)
+        res.send({total, datas})
+    })
     router.get('/', async (req, res) => {
         // const datas = await req.Model.find().populate('parent').limit(10)
-        const datas = await req.Model.find().populate('parent')
-        res.send(datas)
+        const total = await req.Model.find().populate('parent').count()
+        const datas = await req.Model.find().populate('parent').limit(10)
+        res.send({total, datas})
     })
     // 聚合查询，获取父级分类/所属分类信息接口
     router.get('/options', async (req, res) => {
@@ -88,7 +97,7 @@ module.exports = app => {
         const token = jwt.sign({
             id: user._id,
             username: user.name,
-        }, app.get('secret'))
+        }, app.get('secret'),  { expiresIn: '1 days' }) // 设置一个token过期的时间
         res.send({token})
     })
 

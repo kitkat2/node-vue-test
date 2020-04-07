@@ -15,7 +15,7 @@ http.interceptors.request.use(config =>{
     return Promise.reject(err)
 })
 
-// 给http添加一个拦截器 拦截响应
+// 给http添加一个拦截器 拦截错误响应
 http.interceptors.response.use(res => {
     return res
 }, err => {
@@ -26,6 +26,7 @@ http.interceptors.response.use(res => {
         })
 
         if(err.response.status === 401) {
+            localStorage.clear()
             router.push('/login')
         }
     }

@@ -16,6 +16,12 @@ import categoryList from '../views/CategoryList.vue'
 import paperEdit from '../views/PaperEdit.vue'
 import paperList from '../views/PaperList.vue'
 
+// 评论管理
+import commentList from '../views/CommentList.vue'
+
+// 笔记管理
+import noteList from '../views/NoteList.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -67,6 +73,14 @@ const routes = [
     {
       path: '/papers/list',
       component: paperList,
+    },
+    {
+      path: 'comments/list',
+      component:commentList,
+    },
+    {
+      path: '/notes/list',
+      component: noteList,
     },
   ]
 }, ]

@@ -4,106 +4,124 @@
     <el-form label-width="100px" :model="form" @submit.native.prevent="save">
       <el-tabs type="border-card" value="basic">
         <el-tab-pane label="基础信息" name="basic">
-          <el-form-item label="论文标题">
-            <el-input v-model="form.title"></el-input>
-          </el-form-item>
-          <el-form-item label="论文副标题">
-            <el-input v-model="form.subtitle"></el-input>
-          </el-form-item>
-          <el-form-item label="论文分类">
-            <el-select v-model="form.categories" filterable clearable multiple placeholder="请选择论文所属分类">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.name"
-                :value="item._id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="发布日期">
-            <el-input v-model="form.publishDate"></el-input>
-          </el-form-item>
-          <el-form-item label="作者">
-            <el-input v-model="form.author.names"></el-input>
-          </el-form-item>
-          <el-form-item label="作者简介">
-            <el-input type="textarea" rows="3" v-model="form.author.brief"></el-input>
-          </el-form-item>
-          <el-form-item label="论文类型">
-            <el-radio-group v-model="form.type">
-              <el-radio
-                v-for="item in paperTypes"
-                :label="item.label"
-                :value="item.value"
-                :key="item.value"
-              ></el-radio>
-            </el-radio-group>
-          </el-form-item>
           <el-row>
-            <el-col v-if="form.type === paperTypes[0].label">
-              <el-form-item label="期刊名称">
-                <el-input v-model="form.journal.name"></el-input>
+            <el-col :span="20" :offset="2">
+              <el-form-item label="论文标题">
+                <el-input v-model="form.title"></el-input>
               </el-form-item>
-              <el-form-item label="期刊出版号">
-                <el-input v-model="form.journal.issn"></el-input>
+              <el-form-item label="论文副标题">
+                <el-input v-model="form.subtitle"></el-input>
               </el-form-item>
-              <el-form-item label="期刊来源">
-                <el-radio-group v-model="form.journal.sourceType">
-                  <el-radio label="SCI来源期刊"></el-radio>
-                  <el-radio label="EI来源期刊"></el-radio>
-                  <el-radio label="核心期刊"></el-radio>
-                  <el-radio label="CSSCI"></el-radio>
+              <el-form-item label="论文分类">
+                <el-select
+                  v-model="form.categories"
+                  filterable
+                  clearable
+                  multiple
+                  placeholder="请选择论文所属分类"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item._id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="发布日期">
+                <el-date-picker
+                  v-model="form.publishDate"
+                  type="date"
+                  placeholder="选择日期"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
+              </el-form-item>
+              <el-form-item label="作者">
+                <el-input v-model="form.author.names"></el-input>
+              </el-form-item>
+              <el-form-item label="作者简介">
+                <el-input type="textarea" rows="3" v-model="form.author.brief"></el-input>
+              </el-form-item>
+              <el-form-item label="论文类型">
+                <el-radio-group v-model="form.type">
+                  <el-radio
+                    v-for="item in paperTypes"
+                    :label="item.label"
+                    :value="item.value"
+                    :key="item.value"
+                  ></el-radio>
                 </el-radio-group>
               </el-form-item>
-            </el-col>
-            <el-col v-if="form.type === paperTypes[2].label">
-              <el-form-item label="会议名称">
-                <el-input v-model="form.conference.name"></el-input>
+              <el-row>
+                <el-col v-if="form.type === paperTypes[0].label">
+                  <el-form-item label="期刊名称">
+                    <el-input v-model="form.journal.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="期刊出版号">
+                    <el-input v-model="form.journal.issn"></el-input>
+                  </el-form-item>
+                  <el-form-item label="期刊来源">
+                    <el-radio-group v-model="form.journal.sourceType">
+                      <el-radio label="SCI来源期刊"></el-radio>
+                      <el-radio label="EI来源期刊"></el-radio>
+                      <el-radio label="核心期刊"></el-radio>
+                      <el-radio label="CSSCI"></el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+                <el-col v-if="form.type === paperTypes[2].label">
+                  <el-form-item label="会议名称">
+                    <el-input v-model="form.conference.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="会议级别">
+                    <el-radio-group v-model="form.conference.level">
+                      <el-radio label="国际"></el-radio>
+                      <el-radio label="全国"></el-radio>
+                      <el-radio label="地方"></el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="会议时间">
+                    <el-date-picker v-model="form.conference.date" type="date" placeholder="选择日期"></el-date-picker>
+                    {{form.conference.date}}
+                  </el-form-item>
+                </el-col>
+                <el-col v-if="form.type === paperTypes[3].label">
+                  <el-form-item label="报纸名称">
+                    <el-input v-model="form.newspaper.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="报纸出版号">
+                    <el-input v-model="form.newspaper.issn"></el-input>
+                  </el-form-item>
+                  <el-form-item label="报纸出版日期">
+                    <el-date-picker v-model="form.newspaper.date" type="date" placeholder="选择日期"></el-date-picker>
+                    {{form.conference.date}}
+                  </el-form-item>
+                </el-col>
+                <el-col v-if="form.type === paperTypes[4].label">
+                  <el-form-item label="年鉴名称">
+                    <el-input v-model="form.yearbook.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="年鉴出版号">
+                    <el-input v-model="form.yearbook.issn"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-form-item label="关键词">
+                <el-input v-model="form.keyword"></el-input>
               </el-form-item>
-              <el-form-item label="会议级别">
-                <el-radio-group v-model="form.conference.level">
-                  <el-radio label="国际"></el-radio>
-                  <el-radio label="全国"></el-radio>
-                  <el-radio label="地方"></el-radio>
-                </el-radio-group>
+              <el-form-item label="论文摘要">
+                <el-input type="textarea" rows="8" v-model="form.summary"></el-input>
               </el-form-item>
-              <el-form-item label="会议时间">
-                <el-date-picker v-model="form.conference.date" type="date" placeholder="选择日期"></el-date-picker>{{form.conference.date}}
-              </el-form-item>
-            </el-col>
-             <el-col v-if="form.type === paperTypes[3].label">
-              <el-form-item label="报纸名称">
-                <el-input v-model="form.newspaper.name"></el-input>
-              </el-form-item>
-              <el-form-item label="报纸出版号">
-                <el-input v-model="form.newspaper.issn"></el-input>
-              </el-form-item>
-              <el-form-item label="报纸出版日期">
-                <el-date-picker v-model="form.newspaper.date" type="date" placeholder="选择日期"></el-date-picker>{{form.conference.date}}
-              </el-form-item>
-            </el-col>
-             <el-col v-if="form.type === paperTypes[4].label">
-              <el-form-item label="年鉴名称">
-                <el-input v-model="form.yearbook.name"></el-input>
-              </el-form-item>
-              <el-form-item label="年鉴出版号">
-                <el-input v-model="form.yearbook.issn"></el-input>
+              <el-form-item label="论文内容">
+                <vue-editor v-model="form.body"></vue-editor>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-form-item label="关键词">
-            <el-input v-model="form.keyword"></el-input>
-          </el-form-item>
-          <el-form-item label="论文摘要">
-            <el-input type="textarea" rows="5" v-model="form.summary"></el-input>
-          </el-form-item>
-          <el-form-item label="论文内容">
-            <vue-editor v-model="form.body"></vue-editor>
-          </el-form-item>
         </el-tab-pane>
       </el-tabs>
       <el-form-item style="margin-top: 1rem;">
-        <el-button type="primary" native-type="submit">添加</el-button>
+        <el-button type="primary" native-type="submit">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -140,7 +158,8 @@ export default {
   methods: {
     async save() {
       let res;
-      if (this.id) res = await this.$http.put(`rest/papers/${this.id}`, this.form);
+      if (this.id)
+        res = await this.$http.put(`rest/papers/${this.id}`, this.form);
       else res = await this.$http.post("rest/papers", this.form);
 
       if (res) {

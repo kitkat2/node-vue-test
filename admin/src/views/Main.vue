@@ -1,11 +1,11 @@
 <template>
 <!-- 100vh 代表整个屏幕的高度 -->
   <el-container style="height: 100vh;">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+    <el-aside width="15rem" style="background-color: rgb(238, 241, 246)">
       <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
         <el-submenu index="1">
           <template slot="title">
-            <i class="el-icon-message"></i>用户管理
+            <i class="el-icon-user-solid"></i>用户管理
           </template>
           <el-menu-item-group>
             <template slot="title">用户</template>
@@ -26,42 +26,37 @@
             <el-menu-item index="/papers/create">新增论文</el-menu-item>
             <el-menu-item index="/papers/list">论文列表</el-menu-item>
           </el-menu-item-group>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-          </el-submenu>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-setting"></i>评论管理
+            <i class="el-icon-s-comment"></i>评论管理
           </template>
           <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="3-1">选项1</el-menu-item>
-            <el-menu-item index="3-2">选项2</el-menu-item>
+            <template slot="title">评论</template>
+            <el-menu-item index="/comments/list">评论列表</el-menu-item>
           </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="3-3">选项3</el-menu-item>
+        </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">
+            <i class="el-icon-notebook-1"></i>笔记管理
+          </template>
+          <el-menu-item-group>
+            <template slot="title">笔记</template>
+            <el-menu-item index="/notes/list">笔记列表</el-menu-item>
           </el-menu-item-group>
-          <el-submenu index="3-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="3-4-1">选项4-1</el-menu-item>
-          </el-submenu>
         </el-submenu>
       </el-menu>
     </el-aside>
 
     <el-container>
       <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
+        <el-dropdown  @command="handleCommand">
+          <i class="el-icon-s-custom" style="cursor: pointer;"><span style="margin-left: 0.5rem;">{{username}}</span></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item> 
           </el-dropdown-menu>
         </el-dropdown>
-        <span>王小虎</span>
+        
       </el-header>
 
       <el-main>
@@ -86,14 +81,25 @@
 <script>
 export default {
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
-    };
-    return {
-      tableData: Array(20).fill(item)
-    };
+    return  {
+      username: ''
+    }
+  },
+  methods: {
+    getUsername(){
+      this.username = this.$route.params.username || localStorage.username
+    },
+    handleCommand(command) {
+      if(command === 'logout'){
+        localStorage.clear()
+        this.$router.push('/login')
+      }
+      
+    }
+  },
+  created () {
+    this.getUsername()
   }
+
 };
 </script>
