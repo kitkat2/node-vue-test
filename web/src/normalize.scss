@@ -5,11 +5,14 @@
 }
 
 html {
+  margin: 0;
+  padding: 0;
   font-size: 16px;
 }
 
 body {
   margin: 0;
+  padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.2em;
 }
@@ -20,9 +23,15 @@ a {
 
 
 // colors 颜色设置
-$color : (primary: #999999,
+$color : (
+  primary: #fed802,  
+  secondary : #FFC300,
+  highlight: #ffe60f,
+  border: #feffc5,
+  'gray': #686868,
   "white": #fff,
   "black": #000,
+  dark: #3c3c3c,
 );
 
 @each $colorKey,
@@ -124,7 +133,7 @@ $spacing-directions: (
   b: bottom,
 );
 
-$spacing-base-size: 1px;
+$spacing-base-size: 1rem;
 
 $spacing-sizes: (
   0: 0,
@@ -132,7 +141,9 @@ $spacing-sizes: (
   2: 0.5,
   3: 1,
   4: 1.5,
-  5: 3
+  5: 3,
+  6: 3.5,
+  7: 4
 );
 
 @each $typeKey, $type in $spacing-types {
