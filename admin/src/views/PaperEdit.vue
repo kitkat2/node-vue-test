@@ -114,7 +114,18 @@
                 <el-input type="textarea" rows="8" v-model="form.summary"></el-input>
               </el-form-item>
               <el-form-item label="论文内容">
-                <vue-editor v-model="form.body"></vue-editor>
+                <!-- <vue-editor v-model="form.body"></vue-editor> -->
+                <el-upload
+                  :action="uploadUrl+'/resources'"
+                  :headers="getAuthHeaders()"
+                  :on-success="afterUpload"
+                  multiple
+                  :limit="1"
+                  :fileList="fileList"
+                >
+                  <el-button size="small" type="primary">点击上传论文附件</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传pdf格式</div>
+                </el-upload>
               </el-form-item>
             </el-col>
           </el-row>
@@ -128,11 +139,11 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
+// import { VueEditor } from "vue2-editor";
 
 export default {
   components: {
-    VueEditor
+    // VueEditor
   },
   props: ["id"],
   data() {
@@ -143,19 +154,36 @@ export default {
         conference: {},
         newspaper: {},
         yearbook: {},
-        body: ""
+        body: {
+          originalname: '',
+          filename: ''
+        }
       },
       options: [],
       paperTypes: [
         { label: "期刊", value: "01" },
-        { label: "博硕士", value: "02" },
+        { label: "硕博士", value: "02" },
         { label: "会议", value: "03" },
         { label: "报纸", value: "04" },
         { label: "年鉴", value: "05" }
-      ]
+      ],
+      baseUrl: "http://localhost:3000/uploads/resources/"
     };
   },
+  computed: {
+    fileList () {
+      let list = [];
+      if(this.form.body.filename !== ''){
+        list.push({name: this.form.body.originalname,  url: this.baseUrl+this.form.body.filename})
+      }
+      return list;
+    }
+  },
   methods: {
+    afterUpload(res) {
+      console.log(res);
+      this.form.body = {...res}
+    },
     async save() {
       let res;
       if (this.id)
@@ -176,10 +204,9 @@ export default {
       console.log(this.form);
     },
     async fetchCategories() {
-      const res = await this.$http.get(`rest/categories/options`);
-      this.options = res.data.filter(item => {
-        return item.value.length > 5;
-      });
+      let reg = "^[0-9]{6}$";
+      const res = await this.$http.get(`rest/categories/options/${reg}`);
+      this.options = res.data;
     }
   },
   created() {

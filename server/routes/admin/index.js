@@ -26,25 +26,79 @@ module.exports = app => {
 
     // 分页查询
     router.post('/page', async (req, res) => {
-        const {crtPage, pageSize} = await req.body.page
-        console.log(typeof crtPage, typeof pageSize);
-        
-        const total = await req.Model.find().countDocuments()
-        const datas = await req.Model.find().populate('parent').skip((crtPage-1)*pageSize).limit(pageSize)
-        res.send({total, datas})
+        const {
+            crtPage,
+            pageSize,
+            sortedBy
+        } = await req.body.page
+        const search = req.body.search
+        let total = 0
+        let datas = []
+        if (search) {
+            console.log(search)
+            const key = Object.keys(search)[0]
+            const value = new RegExp(search[key], 'i')
+            console.log(key, value)
+            let params = {}
+            params[key] = {
+                $regex: value
+            }
+            total = await req.Model.find(params).countDocuments()
+            datas = await req.Model.find(params).populate('parent').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        } else {
+            total = await req.Model.find().countDocuments()
+            datas = await req.Model.find().populate('parent').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        }
+
+
+        res.send({
+            total,
+            datas
+        })
     })
     router.get('/', async (req, res) => {
         // const datas = await req.Model.find().populate('parent').limit(10)
-        const total = await req.Model.find().populate('parent').count()
-        const datas = await req.Model.find().populate('parent').limit(10)
-        res.send({total, datas})
+        let options = {}
+        const total = await req.Model.find().populate(options).count()
+        const datas = await req.Model.find().populate(options).limit(10)
+        res.send({
+            total,
+            datas
+        })
     })
-    // 聚合查询，获取父级分类/所属分类信息接口
-    router.get('/options', async (req, res) => {
-        const datas = await req.Model.find().populate('parent')
+    // 聚合查询收藏记录
+    router.post('/page/favo', async (req, res) => {
+        const {
+            crtPage,
+            pageSize,
+            sortedBy
+        } = await req.body.page
+        const total = await req.Model.find().countDocuments()
+        let datas = []
+        if (req.resource === 'history') {
+            datas = await req.Model.find().populate('paperId', 'title').populate('userId', 'name').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        }else if (req.resource === 'comments') {
+            datas = await req.Model.find().populate('paperId', 'title').populate('from', 'name').populate('to', 'name').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        }else if (req.resource === 'notes') {
+            datas = await req.Model.find().populate('paperId', 'title').populate('creator', 'name').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        }else {
+            datas = await req.Model.find().populate('paper', 'title').populate('user', 'name').sort(sortedBy).skip((crtPage - 1) * pageSize).limit(pageSize)
+        }
+        res.send({
+            total,
+            datas
+        })
+    })
+   
+    // 获取父级分类/所属分类信息接口
+    router.get('/options/:reg', async (req, res) => {
+        let reg = new RegExp(req.params.reg)
+        const datas = await req.Model.find({
+            value: reg
+        })
         res.send(datas)
     })
-    // 获取单个用户的信息接口
+    // 获取单个元素信息接口
     router.get('/:id', async (req, res) => {
         const model = await req.Model.findById(req.params.id)
         res.send(model)
@@ -52,14 +106,23 @@ module.exports = app => {
     // 删除某个用户的信息接口
     router.delete('/:id', async (req, res) => {
         const model = await req.Model.findByIdAndDelete(req.params.id)
-        if (model)
-            res.send({
-                success: true
-            })
+        if (req.query.update) {
+            const uVal = req.query.update
+            let update = {}
+            update[uVal] = --model[uVal]
+            if (req.resource === 'likes') {
+                await require('../../models/Comment').findByIdAndUpdate(model.paper, update)
+            } else {
+                await require('../../models/Paper').findByIdAndUpdate(model.paper, update)
+            }
+        }
+        res.send({
+            success: true
+        })
     })
     // 利用inflection插件转换类名，作为中间件将类名合并到路由中，实现通用的crud接口
     const resourceMiddleware = require('../../middleware/resource')
-    app.use('/admin/api/rest/:resource', authMiddleware() , resourceMiddleware(), router)
+    app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 
 
     // 图片上传接口
@@ -73,7 +136,16 @@ module.exports = app => {
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)
     })
-
+    // 文件上传接口
+    const uploadfile = multer({
+        dest: __dirname + '/../../uploads/resources'
+    })
+    app.post('/admin/api/upload/resources', authMiddleware(), uploadfile.single('file'), async (req, res) => {
+        const file = req.file
+        console.log(__dirname);
+        file.url = `http://localhost:3000/uploads/resources/${file.filename}`
+        res.send(file)
+    })
     // 用户登录接口
     app.post('/admin/api/login', async (req, res) => {
         const {
@@ -91,19 +163,25 @@ module.exports = app => {
         const isValid = require('bcryptjs').compareSync(passwd, user.passwd)
         assert(isValid, 422, '密码错误')
 
+        const isManager = user.authority === '2'
+        assert(isManager, 422, '您没有权限进入本系统')
+
         // 返回token
 
         // 利用jwt的sign方法生成一个token
         const token = jwt.sign({
             id: user._id,
-            username: user.name,
-        }, app.get('secret'),  { expiresIn: '1 days' }) // 设置一个token过期的时间
-        res.send({token})
+        }, app.get('secret'), {
+            expiresIn: '1 days'
+        }) // 设置一个token过期的时间
+        res.send({
+            token
+        })
     })
 
     // 错误处理函数
-    app.use(async(err, req, res, next) => {
-        res.status(err.status || '500' ).send({
+    app.use(async (err, req, res, next) => {
+        res.status(err.status || '500').send({
             message: err.message
         })
     })

@@ -9,7 +9,7 @@
         @click="$router.push('/papers/create')"
       >新增论文</el-button>
     </h1>
-    <el-table :data="papers">
+    <el-table :data="papers" border  height="500" >
       <el-table-column prop="title" label="论文标题"></el-table-column>
       <el-table-column prop="author.names" label="作者" width="250"></el-table-column>
       <el-table-column prop="publishDate" label="发布日期" width="200"></el-table-column>

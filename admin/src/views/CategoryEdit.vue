@@ -60,10 +60,9 @@ export default {
       console.log(this.form)
     },
     async fetchParent() {
-      const res = await this.$http.get(`rest/categories/options`);
-      this.options = res.data.filter((item)=>{
-        return item.value.length < 5
-      })
+      let reg = '^[0-9]{2,4}$'
+      const res = await this.$http.get(`rest/categories/options/${reg}`);
+      this.options = res.data
     }
   },
   created() {

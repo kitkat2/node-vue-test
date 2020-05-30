@@ -1,5 +1,5 @@
 <template>
-<!-- 100vh 代表整个屏幕的高度 -->
+  <!-- 100vh 代表整个屏幕的高度 -->
   <el-container style="height: 100vh;">
     <el-aside width="15rem" style="background-color: rgb(238, 241, 246)">
       <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
@@ -11,6 +11,12 @@
             <template slot="title">用户</template>
             <el-menu-item index="/users/create">新增用户</el-menu-item>
             <el-menu-item index="/users/list">用户列表</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <template slot="title">操作记录</template>
+            <el-menu-item index="/favorites/list">收藏列表</el-menu-item>
+            <el-menu-item index="/history/list">历史列表</el-menu-item>
+            <el-menu-item index="/like/list">点赞列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">
@@ -50,17 +56,18 @@
 
     <el-container>
       <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown  @command="handleCommand">
-          <i class="el-icon-s-custom" style="cursor: pointer;"><span style="margin-left: 0.5rem;">{{username}}</span></i>
+        <el-dropdown @command="handleCommand">
+          <i class="el-icon-s-custom" style="cursor: pointer;">
+            <span style="margin-left: 0.5rem;">{{username}}</span>
+          </i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="logout">退出登录</el-dropdown-item> 
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        
       </el-header>
 
       <el-main>
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -81,25 +88,23 @@
 <script>
 export default {
   data() {
-    return  {
-      username: ''
-    }
+    return {
+      username: ""
+    };
   },
   methods: {
-    getUsername(){
-      this.username = this.$route.params.username || localStorage.username
+    getUsername() {
+      this.username = this.$route.params.username || localStorage.username;
     },
     handleCommand(command) {
-      if(command === 'logout'){
-        localStorage.clear()
-        this.$router.push('/login')
+      if (command === "logout") {
+        localStorage.clear();
+        this.$router.push("/login");
       }
-      
     }
   },
-  created () {
-    this.getUsername()
+  created() {
+    this.getUsername();
   }
-
 };
 </script>

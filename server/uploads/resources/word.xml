@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<article lang="">
+  <sect1>
+    <title>新建一个测试用的word</title>
+    <para>        里面有段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一段落一</para>
+    <para>插入一张图片</para>
+    <para>
+      <inlinegraphic fileref="embedded:图片 1" width="8.009cm" depth="10.159cm"/>
+    </para>
+    <para/>
+    <para>修改一下图片大小</para>
+    <para/>
+    <para>
+      <inlinegraphic fileref="embedded:图片 4" width="5.127cm" depth="5.536cm"/>
+    </para>
+    <para/>
+    <para>修改一下字体颜色</para>
+    <para>放一个链接<ulink url="http://nodejs.cn/api/modules.html#modules_dirname">http://nodejs.cn/api/modules.html#modules_dirname</ulink></para>
+  </sect1>
+</article>

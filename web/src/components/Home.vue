@@ -1,15 +1,14 @@
 <template>
-  <div class="home">
-    <el-container>
+  <div id="home">
+    <el-container class="bg-light-grey">
       <el-header style="height: auto; padding: 0;">
-        <my-header></my-header>
         <sub-header></sub-header>
       </el-header>
-      <el-container style="width: 75%; margin: 0 auto;">
-        <el-main>
+      <el-container style="width: 75%; margin: 0 auto;" class="d-flex main-container">
+        <el-main class="flex-1 pt-4">
           <paper-card></paper-card>
         </el-main>
-        <el-aside width="18rem">
+        <el-aside width="18rem" class="aside">
           <user-card></user-card>
         </el-aside>
       </el-container>
@@ -30,9 +29,8 @@
       }"
         >UP</div>
       </el-backtop>
-    </template> -->
+      </template>-->
     </el-container>
-    
   </div>
 </template>
 
@@ -46,4 +44,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media only screen and (max-width: 768px) {
+  #home {
+    
+    .main-container{
+      width: 100%;
+      .aside {
+      display: none;
+    }
+    }
+
+  }
+}
 </style>

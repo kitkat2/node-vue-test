@@ -12,7 +12,10 @@ app.use(express.json())
 app.use('/uploads', express.static(__dirname+'/uploads'))
 
 require('./routes/admin')(app);
+require('./routes/web')(app);
+require('./routes/common')(app);
 require('./plugins/db')(app);
+// require('./plugins/libOffice')(app);
 
 
 

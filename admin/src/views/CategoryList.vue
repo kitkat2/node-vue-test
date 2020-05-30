@@ -9,8 +9,8 @@
         @click="$router.push('/categories/create')"
       >新增分类</el-button>
     </h1>
-    <el-table :data="categories">
-      <el-table-column prop="value" label="分类代码" width="150"></el-table-column>
+    <el-table :data="categories"   height="500" border :default-sort = "{prop: 'value', order: 'ascending'}">
+      <el-table-column prop="value" label="分类代码" width="150" sortable></el-table-column>
       <el-table-column prop="parent.name" label="父级分类" width="200"></el-table-column>
       <el-table-column prop="name" label="分类名称"></el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
@@ -51,7 +51,7 @@ export default {
     // 获取分类列表
     async fetch(crtPage) {
       const res = await this.$http.post("rest/categories/page", {
-        page: {crtPage, pageSize: this.page.pageSize}
+        page: {crtPage, pageSize: this.page.pageSize, sortedBy: {value: 1}}
       });
       if (res) {
         this.categories = res.data.datas;

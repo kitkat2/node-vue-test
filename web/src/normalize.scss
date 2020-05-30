@@ -18,21 +18,22 @@ body {
 }
 
 a {
-  color: #999999;
+  color: #FFC300;
 }
 
 
 // colors 颜色设置
-$color : (
-  primary: #fed802,  
+$color : (primary: #fed802,
   secondary : #FFC300,
   highlight: #ffe60f,
   border: #feffc5,
   'gray': #686868,
+  'light-grey': #f4f4f5,
+  "gray-1": #909399,
   "white": #fff,
   "black": #000,
   dark: #3c3c3c,
-);
+  important: #f56c6c);
 
 @each $colorKey,
 $color in $color {
@@ -62,8 +63,12 @@ $font-sizes: (xs: 0.75, // 12px
   sm: 0.875, // 14px
   md: 1, // 16px
   lg: 1.25, // 20px
-  xl: 1.5 // 24px
+  xl: 1.5, // 24px
+  xxl: 2.5
 );
+
+
+
 
 @each $sizeKey,
 $size in $font-sizes {
@@ -73,6 +78,19 @@ $size in $font-sizes {
 
 }
 
+// font-weight
+$font-weights: (2: 200,
+  4: 400,
+  7: 700,
+);
+
+@each $wKey,
+$weight in $font-weights {
+  .fw-#{$wKey} {
+    font-weight: $weight;
+  }
+
+}
 
 // flex flex布局设置
 .d-flex {
@@ -81,6 +99,10 @@ $size in $font-sizes {
 
 .flex-column {
   flex-direction: column;
+}
+
+.f-wrap {
+  flex-wrap: wrap;
 }
 
 $flex-jc: (start: flex-start,
@@ -110,6 +132,7 @@ $value in $flex-ai {
   }
 
 }
+
 .flex-1 {
   flex: 1;
 }
@@ -118,16 +141,24 @@ $value in $flex-ai {
   flex-grow: 1;
 }
 
+// width height 100%
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+
 // spacing 边距设置
 // 0-5: 五个等级
 // .mt-1 => margin top 1
-$spacing-types:  (
-  m: margin,
+$spacing-types: (m: margin,
   p: padding,
 );
 
-$spacing-directions: (
-  l: left,
+$spacing-directions: (l: left,
   t: top,
   r: right,
   b: bottom,
@@ -135,43 +166,92 @@ $spacing-directions: (
 
 $spacing-base-size: 1rem;
 
-$spacing-sizes: (
-  0: 0,
+$spacing-sizes: (0: 0,
   1: 0.25,
   2: 0.5,
   3: 1,
   4: 1.5,
   5: 3,
   6: 3.5,
-  7: 4
-);
+  7: 4);
 
-@each $typeKey, $type in $spacing-types {
+@each $typeKey,
+$type in $spacing-types {
+
   // m-1
-  @each $sizeKey, $size in $spacing-sizes {
-    .#{$typeKey}-#{$sizeKey}{
+  @each $sizeKey,
+  $size in $spacing-sizes {
+    .#{$typeKey}-#{$sizeKey} {
       #{$type}: $size*$spacing-base-size;
     }
   }
-  
+
   // mx-1
-  @each $sizeKey, $size in $spacing-sizes {
-    .#{$typeKey}x-#{$sizeKey}{
+  @each $sizeKey,
+  $size in $spacing-sizes {
+    .#{$typeKey}x-#{$sizeKey} {
       #{$type}-left: $size*$spacing-base-size;
       #{$type}-right: $size*$spacing-base-size;
     }
-    .#{$typeKey}y-#{$sizeKey}{
+
+    .#{$typeKey}y-#{$sizeKey} {
       #{$type}-top: $size*$spacing-base-size;
       #{$type}-bottom: $size*$spacing-base-size;
     }
   }
+
   // mt-1 
-  @each $directionKey, $direction in $spacing-directions {
-    @each $sizeKey, $size in $spacing-sizes {
-      .#{$typeKey}#{$directionKey}-#{$sizeKey}{
-        #{$type}-#{$direction} : $size*$spacing-base-size;
+  @each $directionKey,
+  $direction in $spacing-directions {
+
+    @each $sizeKey,
+    $size in $spacing-sizes {
+      .#{$typeKey}#{$directionKey}-#{$sizeKey} {
+        #{$type}-#{$direction}: $size*$spacing-base-size;
       }
     }
   }
+
+}
+
+
+// 鼠标变为手型
+.pointer {
+  cursor: pointer;
+}
+
+// 段落首行缩进
+.p-indent {
+  text-indent: 2em;
+}
+
+.suffix-tag {
+  height: 0.875rem;
+  padding: 1px 4px;
+  vertical-align: top;
+  text-align: center;
+  line-height: 0.875rem;
+  background: map-get($map: $color, $key: primary);
+  color: #fff;
+  font-size: 0.625rem;
+  border-radius: 0.125rem;
+  font-weight: 200;
+  word-spacing: 0.125rem;
+
+  &.important {
+    background: #f56c6c;
+
+  }
+}
+
+
+// 更改选中文字默认的背景色
+::selection {
+	background: #fcf6ae;
+	color:#3c3c3c;
+}
  
+::-moz-selection {
+	background: #fcf6ae;
+	color: #3c3c3c;
 }

@@ -1,6 +1,6 @@
 <template>
   <div id="paper-card">
-    <el-row style="width: 100%">
+    <el-row style="width: 100%" class="d-flex">
      <el-col :span="5">
         <card-aside>
         <template v-slot:classify>
@@ -10,17 +10,17 @@
               <span class="text-secondary">期 刊</span>
             </p>
             <p class="pt-2 check-more">
-              <el-button type="primary" plain round size="small">查 看 更 多</el-button>
+              <el-button type="primary" plain round size="small" @click="$router.push({name:'classify', params: {type: '0201'}})">查 看 更 多</el-button>
             </p>
           </div>
         </template>
       </card-aside>
      </el-col>
-     <el-col :span="18" class="ml-2">
-        <card-main></card-main>
+     <el-col class="ml-2 flex-1">
+        <card-main :type-val="'期刊'"></card-main>
      </el-col>
     </el-row>
-    <el-row style="width: 100%; padding-right: 1.65rem;" class="mt-2 d-flex jc-between">
+    <el-row  class="mt-2 d-flex jc-between w-100">
      <el-col class="pr-2">
         <card-aside>
         <template v-slot:classify>
@@ -30,7 +30,7 @@
               <span class="text-secondary">报 纸</span>
             </p>
             <p class="pt-2 check-more">
-              <el-button type="primary" plain round size="small">查 看 更 多</el-button>
+              <el-button type="primary" plain round size="small"  @click="$router.push({name:'classify', params: {type: '0204'}})" >查 看 更 多</el-button>
             </p>
           </div>
         </template>
@@ -45,7 +45,7 @@
               <span class="text-secondary">会 议</span>
             </p>
             <p class="pt-2 check-more">
-              <el-button type="primary" plain round size="small">查 看 更 多</el-button>
+              <el-button type="primary" plain round size="small"   @click="$router.push({name:'classify', params: {type: '0203'}})">查 看 更 多</el-button>
             </p>
           </div>
         </template>
@@ -60,16 +60,16 @@
               <span class="text-secondary">硕博士</span>
             </p>
             <p class="pt-2 check-more">
-              <el-button type="primary" plain round size="small">查 看 更 多</el-button>
+              <el-button type="primary" plain round size="small"   @click="$router.push({name:'classify', params: {type: '0202'}})">查 看 更 多</el-button>
             </p>
           </div>
         </template>
       </card-aside>
      </el-col>
     </el-row>
-    <el-row style="width: 100%" class="mt-2">
-      <el-col :span="18" class="mr-2">
-        <card-main></card-main>
+    <el-row style="width: 100%" class="mt-2 d-flex">
+      <el-col  class="mr-2  flex-1">
+        <card-main :type-val="'年鉴'"></card-main>
       </el-col>
       <el-col :span="5">
          <card-aside>
@@ -80,7 +80,7 @@
               <span class="text-secondary"> 年鉴 </span>
             </p>
             <p class="pt-2 check-more">
-              <el-button type="primary" plain round size="small">查 看 更 多</el-button>
+              <el-button type="primary" plain round size="small"   @click="$router.push({name:'classify', params: {type: '0205'}})">查 看 更 多</el-button>
             </p>
           </div>
         </template>

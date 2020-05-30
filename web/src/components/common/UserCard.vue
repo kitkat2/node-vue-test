@@ -1,28 +1,28 @@
 <template>
-  <div id="user-card" style="padding-top: 1.25rem;">
-    <el-card shadow="hover" style="border-color: #fed802">
-      <div id="loged" v-if="user" class="pt-4">
+  <div id="user-card" class="mt-4">
+    <el-card shadow="hover">
+      <div id="loged" v-if="user._id" class="pt-4">
         <el-row class="avatar">
-          <img src="../../static/img/cx.jpg" alt />
+          <img :src="user.avatar" :alt="user.name" v-if="user.avatar" />
+          <i class="el-icon-user-solid text-white px-2 pt-1" v-else></i>
         </el-row>
         <el-row>
-          <el-col :span="24" class="text-center my-3" style="line-height: 2rem;">你好！ {{user}}</el-col>
+          <el-col :span="24" class="text-center my-3  text-gray" style="line-height: 2rem;">你好！ {{user.name}}</el-col>
           <el-col :span="16" :offset="4">
-            <el-button type="primary" style="width: 100%;">进入个人中心</el-button>
+            <el-button type="primary" style="width: 100%;" @click="$router.push({name:`userCenter`, query: {uid: user._id}})">进入个人中心</el-button>
           </el-col>
         </el-row>
       </div>
       <div id="not-loged" v-else>
         <el-row class="avatar text-center">
           <i class="el-icon-user-solid text-white mt-1"></i>
-           <!-- <el-avatar icon="el-icon-user-solid text-white mt-1"></el-avatar> -->
         </el-row>
         <el-row >
           <el-col :span="16" class="mt-3" :offset="4">
-            <el-button type="primary" style="width: 100%;">立即登录</el-button>
+            <el-button type="primary" style="width: 100%;" @click="$router.push('/login/0')">立即登录</el-button>
           </el-col>
           <el-col :span="16" class="my-3" :offset="4">
-            <el-button type="primary" style="width: 100%;">注 册</el-button>
+            <el-button type="primary" style="width: 100%;" @click="$router.push('/login/1')">注 册</el-button>
           </el-col>
         </el-row>
       </div>
@@ -31,18 +31,22 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "user-card",
   data() {
     return {
-      user: ""
     };
+  },
+  computed: {
+    ...mapState(['user']),
   }
 };
 </script>
 
 <style lang="scss" scoped>
 #user-card {
+  border-top: 2.5rem solid #fed802;
   .avatar {
     width: 5rem;
     height: 5rem;
@@ -58,4 +62,5 @@ export default {
     }
   }
 }
+
 </style>

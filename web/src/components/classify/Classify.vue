@@ -1,38 +1,28 @@
 <template>
-  <div class="classify">
-    <el-container>
+  <div id="classify">
+    <el-container class="bg-light-grey">
       <el-header style="height: auto; padding: 0;">
-        <my-header></my-header>
         <sub-header></sub-header>
       </el-header>
       <el-container style="width: 75%; margin: 0 auto;">
-        <el-main>
-         
+        <el-main class="bg-white mt-4 p-0 mr-3">
+          <h4 class="fs-lg mt-0 text-border bg-primary">
+            <i class="mr-2 fs-xl el-icon-folder-opened py-2 pl-4"></i>论文分类
+          </h4>
+          <div class="w-100 p-4">
+            <classify-filter></classify-filter>
+            <el-divider class="bg-secondary"></el-divider>
+            <paper-list></paper-list>
+          </div>
         </el-main>
-        <el-aside width="18rem">
+        <el-aside width="18rem" class="aside">
           <user-card></user-card>
         </el-aside>
       </el-container>
       <el-footer style="padding: 0;">
         <my-footer></my-footer>
       </el-footer>
-      <!-- <template>
-      <el-backtop target=".page-component__scroll .el-scrollbar__wrap" >
-        <div
-          style="{
-        height: 100%;
-        width: 100%;
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0,0,0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-      }"
-        >UP</div>
-      </el-backtop>
-    </template> -->
     </el-container>
-    
   </div>
 </template>
 

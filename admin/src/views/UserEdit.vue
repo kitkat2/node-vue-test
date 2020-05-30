@@ -30,9 +30,8 @@
       </el-form-item>
       <el-form-item label="用户权限">
         <el-radio-group v-model="form.authority">
-          <el-radio label="普通用户" value="0"></el-radio>
-          <el-radio label="管理员"  value="1"></el-radio>
-          <el-radio label="超级管理员"  value="2"></el-radio>
+          <el-radio label="0" value="0">普通用户</el-radio>
+          <el-radio label="2"  value="2">超级管理员</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="冻结用户">
@@ -60,9 +59,9 @@ export default {
     afterUpload(res) {
       console.log(res);
       this.$set(this.form, "avatar", res.url);
-      console.log(this.form.avatar);
     },
     async save() {
+      console.log(this.form)
       let res;
       if (this.id)
         res = await this.$http.put(`rest/users/${this.id}`, this.form);

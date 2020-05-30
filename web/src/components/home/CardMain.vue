@@ -1,64 +1,50 @@
 <template>
   <el-card id="card-main" style="height: 14rem;">
-    <ul class="paper-list">
-      <li class="py-2 text-gray" v-for="(data, index) in datas" :key="index">
+    <ul class="paper-list" v-if="datas.length > 0">
+      <li class="py-2 text-gray" v-for="data in datas" :key="data._id" @click="$router.push({name: 'detail',query: {paperid: data._id}})">
         <el-row>
           <el-col :span="14" class="title" :title="data.title">{{data.title}}</el-col>
           <el-col :span="6">
             <i class="el-icon-view fs-sm">
-              <span class="ml-2">浏览: {{data.view}}</span>
+              <span class="ml-2">浏览: {{data.viewCount}}</span>
             </i>
           </el-col>
           <el-col :span="4">
-            <span class="fs-sm">{{data.date}}</span>
+            <span class="fs-sm">{{data.publishDate}}</span>
           </el-col>
         </el-row>
       </li>
     </ul>
+    <div v-else class="mt-5 py-5 text-center text-gray-1">暂无数据</div>
   </el-card>
 </template>
 
 
 <script>
-const datas = [
-  {
-    title:
-      "文献论文标题1文献论文标题1文献论文标题1文献论文标题1文献论文标题1文献论文标题1文献论文标题1",
-    author: "张三",
-    date: "2016-12-26",
-    view: 1111
-  },
-  {
-    title: "文献论文标题2",
-    author: "张三",
-    date: "2016-12-26",
-    view: 1111
-  },
-  {
-    title: "文献论文标题3",
-    author: "张三",
-    date: "2016-12-26",
-    view: 1111
-  },
-  {
-    title: "文献论文标题4",
-    author: "张三",
-    date: "2016-12-26",
-    view: 1111
-  },
-  {
-    title: "文献论文标题5",
-    author: "张三",
-    date: "2016-12-26",
-    view: 1111
-  }
-];
 export default {
   name: "card-main",
+  props: ["typeVal"],
   data() {
     return {
-      datas: datas
+      datas: [],
+      page: {
+        crtPage: 1,
+        pageSize: 5,
+      }
     };
+  },
+  methods: {
+    async fetch() {
+      const query = this.typeVal ? { type: this.typeVal } : {};
+      const page = { ...this.page, sortedBy: { viewCount: -1 } };
+      const res = await this.$http.post(`rest/papers/page`, { query, page });
+      if (res) {
+        this.datas = [...res.data.datas];
+      }
+    }
+  },
+  created() {
+    this.fetch();
   }
 };
 </script>
@@ -93,8 +79,8 @@ export default {
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
       }
-      &:hover{
-        color: #FFC300;
+      &:hover {
+        color: #ffc300;
       }
     }
   }

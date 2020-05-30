@@ -9,6 +9,10 @@ import Main from '../views/Main.vue'
 // 用户管理
 import userEdit from '../views/UserEdit.vue'
 import userList from '../views/UserList.vue'
+// 用户操作
+import favoriteList from '../views/FavoriteList.vue'
+import historyList from '../views/HistoryList.vue'
+import likeList from '../views/LikeList.vue'
 // 分类管理
 import categoryEdit from '../views/CategoryEdit.vue'
 import categoryList from '../views/CategoryList.vue'
@@ -47,6 +51,18 @@ const routes = [
     {
       path: '/users/list',
       component: userList,
+    },
+    {
+      path: '/favorites/list',
+      component: favoriteList,
+    },
+    {
+      path: '/history/list',
+      component: historyList,
+    },
+    {
+      path: '/like/list',
+      component: likeList,
     },
     {
       path: '/categories/create',
