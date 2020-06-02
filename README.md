@@ -7,23 +7,23 @@
 
 ### 实现效果
 
-####登录注册
+#### 登录注册
 
  ![login](img/login.png)
  
-####个人中心
+#### 个人中心
 
  ![userCenter](img/userCenter.png)
  
  ![editInfo](img/editInfo.png)
  
-####论文分类
+#### 论文分类
 
  ![filter](img/filter.png)
  
  ![filter2](img/filter2.png)
  
-####论文详情
+#### 论文详情
 
  ![detail](img/detail.png)
  
@@ -31,7 +31,7 @@
  
  ![clist](img/clist.png)
 
-####论文阅读
+#### 论文阅读
 
  ![read](img/read.png)
 
